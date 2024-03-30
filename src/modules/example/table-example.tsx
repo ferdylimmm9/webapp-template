@@ -1,8 +1,10 @@
-import { Table } from '@mantine/core';
+import { Table, Title } from '@mantine/core';
+
+import TableList from '../admin/components/table-list';
 
 import useTableDataGenerator from '@/components/table/use-table-data-generator';
 
-export default function Main() {
+export default function TableExample() {
   const elements = [
     { position: 6, mass: 12.011, symbol: 'C', name: 'Carbon' },
     { position: 7, mass: 14.007, symbol: 'N', name: 'Nitrogen' },
@@ -23,8 +25,9 @@ export default function Main() {
 
   return (
     <>
+      <Title order={2}>Table Example</Title>
       <Table.ScrollContainer minWidth="800px">
-        <Table data={data} />
+        <TableList data={data} />
       </Table.ScrollContainer>
     </>
   );

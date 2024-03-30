@@ -7,6 +7,6 @@ import type { NextApiRequest, NextApiResponse } from 'next';
  * about the request, such as the URL, headers, and body.
  * @param res - NextApiResponse<cat.Data>
  */
-export default function handler(_req: NextApiRequest, res: NextApiResponse<cat.Data>) {
+export default function handler(_req: NextApiRequest, res: NextApiResponse) {
   res.status(200).json({ Boom: 'API is Working' });
 }

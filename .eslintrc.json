@@ -1,36 +1,34 @@
 {
-  "env": {
-    "browser": true,
-    "es2021": true
-  },
   "extends": [
-    "airbnb",
-    "airbnb-typescript",
-    "airbnb/hooks",
-    "next",
-    "next/core-web-vitals",
-    "prettier",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended"
+    // "next/core-web-vitals",
+    "plugin:@next/next/recommended",
+    "universe/web",
+    "plugin:json/recommended",
+    "plugin:jsx-a11y/recommended"
   ],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "ecmaVersion": "latest",
-    "sourceType": "module",
-    "project": ["./tsconfig.json", "./tsconfig.node.json"]
+  "plugins": ["react-hooks"],
+  "env": {
+    "node": true
   },
-  "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
-    "@typescript-eslint/no-unused-vars": "error",
-    "@typescript-eslint/no-explicit-any": "error",
+    "prettier/prettier": [
+      "warn",
+      {
+        "endOfLine": "auto"
+      }
+    ],
     "react/react-in-jsx-scope": "off",
-    "react/jsx-props-no-spreading": "off",
-    "object-curly-newline": "off",
-    "no-console": "warn", // 👈 TO AVOID CONSOLE ERRORS
-    "no-debugger": "warn" // 👈 TO AVOID DEBUGGER ERRORS
-    //"array-element-newline":: ["error", "consistent"],
+    "react/jsx-uses-react": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/jsx-key": "warn",
+    "@typescript-eslint/no-use-before-define": ["error", { "variables": false }],
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/explicit-function-return-type": 0,
+    "@typescript-eslint/camelcase": 0,
+    "@typescript-eslint/no-unused-vars": "warn",
+    "react/prop-types": 0,
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/no-static-element-interactions": "off"
   }
 }
