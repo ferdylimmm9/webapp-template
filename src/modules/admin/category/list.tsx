@@ -6,7 +6,7 @@ import { categories } from './components/category-form-type';
 import ListTitle from '../components/list-title';
 import TableList from '../components/table-list';
 
-import { NavigationRoutes } from '@/components/side-navigation/side-navigation';
+import { NavigationRoutes } from '@/common/constants/route';
 import useTableDataGenerator from '@/components/table/use-table-data-generator';
 
 export default function CategoryList() {

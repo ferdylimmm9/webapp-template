@@ -1,8 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { NavigationRoutes } from './side-navigation/side-navigation';
-
+import { NavigationRoutes } from '@/common/constants/route';
 import useAuth from '@/hooks/use-auth';
 
 const privateRoutes = [NavigationRoutes.example];

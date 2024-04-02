@@ -5,6 +5,7 @@ import PasswordInputField, {
 } from './password-input-field';
 import RadioInputField, { RadioInputFieldProps } from './radio-input-field';
 import SelectField, { SelectFieldProps } from './select-input-field';
+import SubmitField, { SubmitFieldProps } from './submit-field';
 import TextInputField, { TextInputFieldProps } from './text-input-field';
 
 export type InputProps =
@@ -13,6 +14,7 @@ export type InputProps =
   | DateInputFieldProps
   | NumberInputFieldProps
   | RadioInputFieldProps
+  | SubmitFieldProps
   | SelectFieldProps;
 
 export default function Input(props: InputProps) {
@@ -27,6 +29,8 @@ export default function Input(props: InputProps) {
       return <NumberInputField {...props} />;
     case 'radio':
       return <RadioInputField {...props} />;
+    case 'submit':
+      return <SubmitField {...props} />;
     case 'text':
     case 'email':
     case 'tel':

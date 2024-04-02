@@ -11,14 +11,18 @@ export function getToken() {
   return result ? (JSON.parse(result) as TokenModel) : undefined;
 }
 
-export function setToken(value: TokenModel) {
+export function setToken(value: TokenModel | undefined) {
   if (typeof window === 'undefined') return;
+  if (value === undefined) {
+    window.localStorage.removeItem(AUTH_KEY);
+    return;
+  }
   window.localStorage.setItem(AUTH_KEY, JSON.stringify(value));
 }
 
 export const AuthContext = React.createContext<{
   token: TokenModel | undefined;
-  setToken: React.Dispatch<React.SetStateAction<TokenModel | undefined>>;
+  setToken: (token: TokenModel | undefined) => void;
   logout: () => void;
 }>({
   token: undefined,
@@ -27,12 +31,17 @@ export const AuthContext = React.createContext<{
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [token, setToken] = React.useState<TokenModel | undefined>(undefined);
+  const [token, _setToken] = React.useState<TokenModel | undefined>(undefined);
   const { replace } = useRouter();
 
   const logout = () => {
-    setToken(undefined);
+    _setToken(undefined);
     replace('/login');
+  };
+
+  const handleToken = (token: TokenModel | undefined) => {
+    _setToken(token); // state
+    setToken(token); // storage
   };
 
   React.useEffect(() => {
@@ -45,7 +54,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     <AuthContext.Provider
       value={{
         token,
-        setToken,
+        setToken: handleToken,
         logout,
       }}
     >

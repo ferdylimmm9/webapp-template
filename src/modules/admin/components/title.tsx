@@ -2,7 +2,7 @@ import { Text, TextProps } from '@mantine/core';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { NavigationRoutes } from '@/components/side-navigation/side-navigation';
+import { NavigationRoutes } from '@/common/constants/route';
 
 export function getTitle(pathname: string) {
   switch (pathname as NavigationRoutes) {

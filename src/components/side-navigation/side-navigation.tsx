@@ -5,21 +5,8 @@ import { useRouter } from 'next/router';
 
 import classes from './NavbarSimple.module.css';
 
+import { NavigationRoutes } from '@/common/constants/route';
 import colors from '@/common/styles/colors';
-
-export enum NavigationRoutes {
-  loginAdmin = '/admin/login',
-  example = '/example',
-  home = '/admin',
-  //categories
-  categories = '/admin/categories',
-  createCategory = '/admin/categories/create',
-  viewCategory = '/admin/categories/[id]',
-  //brand
-  brands = '/admin/brands',
-  createBrand = '/admin/brands/create',
-  viewBrand = '/admin/brands/[id]',
-}
 
 export type SideNavigationLink = {
   href: string;
@@ -82,8 +69,8 @@ export default function SideNavigation({
       <Container
         w="100%"
         mah="100dvh"
-        miw="calc(100dvw - 180px)"
-        maw="calc(100dvw - 180px)"
+        miw="calc(100dvw - 190px)"
+        maw="calc(100dvw - 190px)"
         style={{ overflow: 'auto' }}
         p={16}
       >
