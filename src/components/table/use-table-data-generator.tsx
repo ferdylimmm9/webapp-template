@@ -44,7 +44,7 @@ export default function useTableDataGenerator<T extends object>(
   props: UseTableDataGeneratorProps<T>,
 ): TableData {
   const {
-    data,
+    data = [],
     onClickDelete,
     onClickDetail,
     onRowCustom,
@@ -52,7 +52,8 @@ export default function useTableDataGenerator<T extends object>(
     onGenerateHead,
   } = props;
   const hasAction = !!props.onClickDelete || !!props.onClickDetail;
-  const head = Object.keys(data?.[0]).map((key) => key);
+  const row = data?.[0] ?? {};
+  const head = Object.keys(row).map((key) => key);
   const body = data.map((item: any) => {
     const row =
       onRowCustom?.(item) ??

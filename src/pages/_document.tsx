@@ -1,5 +1,7 @@
 import { Html, Head, Main, NextScript } from 'next/document';
 
+import resetStyle from '@/common/constants/reset-style';
+
 export default function Document(): JSX.Element {
   return (
     <Html lang="en">
@@ -62,6 +64,7 @@ export default function Document(): JSX.Element {
           property="og:image"
           content="https://nextjs-pwa-template-repo.vercel.app/icons/og-image.png"
         />
+        <style>{resetStyle}</style>
       </Head>
       <body>
         <Main />

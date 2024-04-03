@@ -29,6 +29,8 @@ export const apiList = {
 
 export type MethodType = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
+export type ModelType = 'users' | 'categories' | 'spare_parts';
+
 const client = axios.create({
   baseURL: API_URl,
   headers: {
@@ -37,19 +39,22 @@ const client = axios.create({
   },
 });
 
+interface CallApiProps {
+  url: string;
+  method: MethodType;
+  params?: any;
+  data?: any;
+}
+
 export async function callApi<T = any>({
   url,
   method = 'GET',
   data,
   params,
-}: {
-  url: string;
-  method: MethodType;
-  params?: any;
-  data?: any;
-}) {
+}: CallApiProps) {
   const token = getToken()?.token;
-  return (await client({
+  //https://medium.com/@amavictor/how-to-use-react-query-axios-and-a-custom-request-processor-to-transform-your-data-2a9f0c9f5bf0
+  return client({
     method,
     url,
     data,
@@ -57,5 +62,26 @@ export async function callApi<T = any>({
       Authorization: token ? `Bearer ${token}` : undefined,
     },
     params,
-  })) as AxiosResponse<T>;
+  })
+    .then((value: AxiosResponse<T>) => value.data)
+    .catch((error) => Promise.reject(error.response.data));
+}
+
+export async function uploadFile<T = any>({
+  id,
+  model,
+}: {
+  model: ModelType;
+  id: string;
+}) {
+  const token = getToken()?.token;
+  return client({
+    method: 'POST',
+    url: [apiList.file + model + id].join('/'),
+    headers: {
+      Authorization: token ? `Bearer ${token}` : undefined,
+    },
+  })
+    .then((value: AxiosResponse<T>) => value.data)
+    .catch((error) => Promise.reject(error.response.data));
 }

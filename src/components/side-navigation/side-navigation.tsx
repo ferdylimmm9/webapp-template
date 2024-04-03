@@ -68,7 +68,6 @@ export default function SideNavigation({
       </nav>
       <Container
         w="100%"
-        mah="100dvh"
         miw="calc(100dvw - 190px)"
         maw="calc(100dvw - 190px)"
         style={{ overflow: 'auto' }}

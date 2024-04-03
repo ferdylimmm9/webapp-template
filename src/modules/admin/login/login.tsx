@@ -1,4 +1,4 @@
-import { Box, Card, Flex, Image, Space, Text } from '@mantine/core';
+import { Box, Card, Center, Flex, Image, Space, Text } from '@mantine/core';
 import { SignIn } from '@phosphor-icons/react';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -42,7 +42,7 @@ export default function Login() {
           data: values,
         });
 
-        setToken(result.data);
+        setToken(result);
 
         notification.success({
           message: 'berhasil login',
@@ -66,7 +66,9 @@ export default function Login() {
           <Text ta="center" fz={40} fw={900} c="white">
             Welcome to Toko Ria
           </Text>
-          <Image w={200} src="/icons/logo.png" m="auto" />
+          <Center>
+            <Image w={200} src="/icons/logo.png" />
+          </Center>
           <Text ta="center" fz={50} fw={600} c="white">
             Login
           </Text>

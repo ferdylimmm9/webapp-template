@@ -1,3 +1,3 @@
-import Example from '../example';
+import AdminHome from '@/modules/admin/home/home';
 
-export default Example;
+export default AdminHome;

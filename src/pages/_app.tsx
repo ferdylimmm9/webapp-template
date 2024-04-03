@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { MantineProvider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { Poppins } from 'next/font/google';
@@ -31,6 +32,19 @@ const poppins = Poppins({
   variable: '--font-poppins',
 });
 
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+      networkMode: 'offlineFirst',
+    },
+    mutations: {
+      retry: false,
+    },
+  },
+});
+
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>);
   React.useEffect(() => {
@@ -48,26 +62,28 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
           content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
         />
       </Head>
-      <MantineProvider>
-        <ModalsProvider
-          modalProps={{
-            centered: true,
-          }}
-        >
-          <Notifications
-            mb={70}
-            limit={10}
-            zIndex={9999999}
-            autoClose={4000}
-            position="bottom-center"
-          />
-          <AuthProvider>
-            <PrivateRoute>
-              <>{getLayout(<Component {...pageProps} />)}</>
-            </PrivateRoute>
-          </AuthProvider>
-        </ModalsProvider>
-      </MantineProvider>
+      <QueryClientProvider client={queryClient}>
+        <MantineProvider>
+          <ModalsProvider
+            modalProps={{
+              centered: true,
+            }}
+          >
+            <Notifications
+              mb={70}
+              limit={10}
+              zIndex={9999999}
+              autoClose={4000}
+              position="bottom-center"
+            />
+            <AuthProvider>
+              <PrivateRoute>
+                <>{getLayout(<Component {...pageProps} />)}</>
+              </PrivateRoute>
+            </AuthProvider>
+          </ModalsProvider>
+        </MantineProvider>
+      </QueryClientProvider>
     </>
   );
 }

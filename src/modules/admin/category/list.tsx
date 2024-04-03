@@ -2,17 +2,22 @@ import { Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { useRouter } from 'next/router';
 
-import { categories } from './components/category-form-type';
 import ListTitle from '../components/list-title';
+import LoaderView from '../components/loader-view';
 import TableList from '../components/table-list';
 
+import { useDeleteCategory, useGetCategories } from '@/api-hooks/category-api';
 import { NavigationRoutes } from '@/common/constants/route';
+import { formatDate } from '@/common/helpers/string';
 import useTableDataGenerator from '@/components/table/use-table-data-generator';
 
 export default function CategoryList() {
-  const data = categories;
+  const query = useGetCategories();
+  const { data = [] } = query;
   const { push } = useRouter();
 
+  const { mutateAsync, error } = useDeleteCategory();
+  console.log(error);
   const table = useTableDataGenerator({
     data,
     onClickDetail(item) {
@@ -23,27 +28,43 @@ export default function CategoryList() {
         title: `Hapus ${item.name}`,
         children: (
           <Text>
-            Ad ea incididunt est aliquip eiusmod sint laborum enim irure aute.
-            Anim exercitation laboris officia ex do excepteur do quis officia
-            aliquip. Cillum culpa tempor excepteur velit aliquip ipsum minim. Do
-            veniam amet ut et dolor nostrud et eiusmod veniam. Exercitation
-            Lorem eiusmod sunt minim cillum quis nulla minim Lorem incididunt
-            dolor aliqua.
+            Apakah Anda yakin untuk menghapus{' '}
+            <Text span fw={600}>
+              {item.name}
+            </Text>{' '}
+            ?
           </Text>
         ),
         labels: { confirm: 'Ya', cancel: 'Batal' },
-        onCancel: () => console.log('Cancel'),
-        onConfirm: () => console.log('Confirmed'),
+        onCancel: () => {},
+        onConfirm: () => {
+          mutateAsync(item.id);
+        },
         confirmProps: {
           color: 'red',
         },
       });
     },
+    onRowCustom(item) {
+      return [
+        item.name,
+        item.description,
+        formatDate(item.created_at),
+        formatDate(item.updated_at),
+      ];
+    },
+    onGenerateHead(item) {
+      return ['Nama', 'Deskripsi', 'Created At', 'Updated At', 'Action'];
+    },
   });
   return (
-    <>
-      <ListTitle />
-      <TableList data={table} />
-    </>
+    <LoaderView query={query}>
+      {(data) => (
+        <>
+          <ListTitle query={query} />
+          <TableList data={table} />
+        </>
+      )}
+    </LoaderView>
   );
 }

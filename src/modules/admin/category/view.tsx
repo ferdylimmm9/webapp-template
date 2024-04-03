@@ -2,24 +2,41 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import CategoryForm from './components/category-form';
-import { CategoryFormType, categories } from './components/category-form-type';
+import { CategoryFormType } from './components/category-form-type';
+import LoaderView from '../components/loader-view';
 
+import { useGetCategory, useUpdateCategory } from '@/api-hooks/category-api';
 import notification from '@/common/helpers/notifications';
+import { queryClient } from '@/pages/_app';
 
 export default function CategoryView() {
   const { query } = useRouter();
-  const id = query.id;
+  const id = query.id as string;
 
-  const category = categories.find((category) => category.id === id);
+  const queryCategory = useGetCategory(id);
+  const { mutateAsync } = useUpdateCategory();
 
-  const onSubmit = React.useCallback(async (values: CategoryFormType) => {
-    notification.success({
-      message: 'Edit Kategori Sukses',
-    });
-    notification.error({
-      message: 'Edit Kategori Gagal',
-    });
-  }, []);
+  const onSubmit = React.useCallback(
+    async (values: CategoryFormType) => {
+      try {
+        await mutateAsync({ id, data: values });
+        notification.success({
+          message: 'Edit Kategori Sukses',
+        });
+        //update cache
+        queryClient.refetchQueries();
+      } catch (e: any) {
+        notification.error({
+          message: e.message,
+        });
+      }
+    },
+    [id, mutateAsync],
+  );
 
-  return <CategoryForm category={category} onSubmit={onSubmit} />;
+  return (
+    <LoaderView query={queryCategory}>
+      {(category) => <CategoryForm category={category} onSubmit={onSubmit} />}
+    </LoaderView>
+  );
 }
