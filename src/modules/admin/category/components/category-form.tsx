@@ -9,6 +9,7 @@ import {
 } from './category-form-type';
 import FormActionComponent from '../../components/form-action-component';
 import Title from '../../components/title';
+import { useDeleteCategoryHook } from '../list';
 
 import Form from '@/components/form';
 import Input from '@/components/input';
@@ -21,6 +22,7 @@ interface CategoryFormProps {
 
 export default function CategoryForm(props: CategoryFormProps) {
   const { category, onSubmit } = props;
+  const onClickDelete = useDeleteCategoryHook();
   const defaultValues = React.useMemo<CategoryFormType>(() => {
     return {
       description: category?.description ?? '',
@@ -53,7 +55,9 @@ export default function CategoryForm(props: CategoryFormProps) {
           label="Deskripsi Kategori"
           placeholder="Masukkan Deskripsi Kategori"
         />
-        <FormActionComponent onClickDelete={() => {}} />
+        <FormActionComponent
+          onClickDelete={category ? () => onClickDelete(category) : undefined}
+        />
       </Flex>
     </Form>
   );
