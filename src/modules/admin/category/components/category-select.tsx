@@ -1,7 +1,6 @@
 import { Select, SelectProps } from '@mantine/core';
 
-import { categories } from './category-form-type';
-
+import { useGetCategories } from '@/api-hooks/category-api';
 import Input from '@/components/input';
 
 interface CategorySelectProps extends SelectProps {
@@ -10,16 +9,29 @@ interface CategorySelectProps extends SelectProps {
 }
 
 export default function CategorySelect(props: CategorySelectProps) {
-  const { type = 'form', name = '', ...rest } = props;
-  const data: SelectProps['data'] = categories.map((category) => {
+  const { type = 'form', name = '', disabled, ...rest } = props;
+  const { data = [], isFetching } = useGetCategories();
+
+  const options: SelectProps['data'] = data.map((category) => {
     return {
       value: category.id,
       label: category.name,
     };
   });
 
+  const _disabled = disabled || isFetching;
+
   if (type === 'form') {
-    return <Input {...rest} type="select" data={data} name={name} />;
+    return (
+      <Input
+        {...rest}
+        type="select"
+        data={options}
+        name={name}
+        disabled={_disabled}
+      />
+    );
   }
-  return <Select {...rest} data={data} />;
+
+  return <Select {...rest} data={options} disabled={_disabled} />;
 }

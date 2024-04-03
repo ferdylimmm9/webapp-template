@@ -24,7 +24,7 @@ export default function CategoryForm(props: CategoryFormProps) {
   const defaultValues = React.useMemo<CategoryFormType>(() => {
     return {
       description: category?.description ?? '',
-      file_url: category?.file_url ?? '',
+      file_name: category?.file_name ?? '',
       name: category?.name ?? '',
       data: category,
     };
