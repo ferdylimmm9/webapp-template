@@ -1,5 +1,5 @@
 import { Button, Container, Flex, Group, Image } from '@mantine/core';
-import { Book, Car } from '@phosphor-icons/react';
+import { Book, Car, SignOut } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -7,6 +7,7 @@ import classes from './NavbarSimple.module.css';
 
 import { NavigationRoutes } from '@/common/constants/route';
 import colors from '@/common/styles/colors';
+import useAuth from '@/hooks/use-auth';
 
 export type SideNavigationLink = {
   href: string;
@@ -19,7 +20,7 @@ export default function SideNavigation({
 }: {
   children: React.ReactNode;
 }) {
-  const { pathname } = useRouter();
+  const { pathname, replace } = useRouter();
   const links: SideNavigationLink[] = [
     {
       href: NavigationRoutes.categories,
@@ -32,6 +33,13 @@ export default function SideNavigation({
       icon: <Car size={16} />,
     },
   ];
+
+  const { setToken } = useAuth();
+
+  const handleLogout = () => {
+    replace(NavigationRoutes.loginAdmin);
+    setToken(undefined);
+  };
   return (
     <Flex miw="100dvw" mih="100dvh">
       <nav className={classes.navbar}>
@@ -61,7 +69,13 @@ export default function SideNavigation({
         </div>
 
         <div className={classes.footer}>
-          <Button fullWidth variant="subtle" color="white">
+          <Button
+            leftSection={<SignOut size={16} />}
+            fullWidth
+            variant="subtle"
+            onClick={handleLogout}
+            color="white"
+          >
             Logout
           </Button>
         </div>
